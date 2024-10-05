@@ -1,5 +1,6 @@
 package com.gestion.personnel.services;
 
+import com.gestion.personnel.models.Direction;
 import com.gestion.personnel.models.Entreprise;
 import com.gestion.personnel.repositories.EntrepriseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,16 @@ public class EntrepriseService {
     @Autowired
     private EntrepriseRepository entrepriseRepository;
 
-    // Créer une nouvelle entreprise
+    // Créer une nouvelle entreprise avec ses directions
     public Entreprise creerEntreprise(Entreprise entreprise) {
+    	// Pour chaque direction, on assigne l'entreprise correspondante
+        if (entreprise.getDirections() != null) {
+            for (Direction direction : entreprise.getDirections()) {
+                direction.setEntreprise(entreprise);  // Associer l'entreprise à la direction
+            }
+        }
+
+        // Sauvegarder l'entreprise avec ses directions
         return entrepriseRepository.save(entreprise);
     }
 
@@ -29,19 +38,25 @@ public class EntrepriseService {
         return entrepriseRepository.findById(id);
     }
 
-    // Modifier une entreprise
+    // Modifier une entreprise avec ses directions
     public Entreprise modifierEntreprise(Integer id, Entreprise entrepriseDetails) {
         Entreprise entreprise = entrepriseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Entreprise non trouvée"));
+
         entreprise.setNomEntreprise(entrepriseDetails.getNomEntreprise());
         entreprise.setAdresseEntreprise(entrepriseDetails.getAdresseEntreprise());
         entreprise.setEmailEntreprise(entrepriseDetails.getEmailEntreprise());
+
+        // Met à jour les directions si présentes
+        if (entrepriseDetails.getDirections() != null) {
+            entreprise.setDirections(entrepriseDetails.getDirections());
+        }
+
         return entrepriseRepository.save(entreprise);
     }
 
-    // Supprimer une entreprise
+    // Supprimer une entreprise et ses directions associées
     public void supprimerEntreprise(Integer id) {
         entrepriseRepository.deleteById(id);
     }
 }
-

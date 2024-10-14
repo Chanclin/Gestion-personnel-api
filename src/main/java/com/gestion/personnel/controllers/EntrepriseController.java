@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/entreprises")
+//@RequestMapping("/api/entreprises")
 public class EntrepriseController {
 
     @Autowired
     private EntrepriseServiceImpl entrepriseService;
 
     // Lister toutes les entreprises
-    @GetMapping("/lister")
+    @GetMapping("/api/entreprises")
     public ResponseEntity<List<EntrepriseDto>> listerEntreprises() {
     	//List<Entreprise> entreprises = entrepriseService.listerEntreprises();
     	//return ResponseEntity.ok(entreprises);
@@ -27,7 +27,7 @@ public class EntrepriseController {
     }
 
     // Créer une nouvelle entreprise
-    @PostMapping("/creer")
+    @PostMapping("/api/entreprises")
     //public ResponseEntity<Entreprise> creerEntreprise(@RequestBody Entreprise entreprise) {
      //   Entreprise nouvelleEntreprise = entrepriseService.creerEntreprise(entreprise);
      //   return ResponseEntity.ok(nouvelleEntreprise);
@@ -38,7 +38,7 @@ public class EntrepriseController {
 
 
     // Modifier une entreprise par ID
-    @PutMapping("/modifier/{id}")
+    @PutMapping("/api/entreprises/{idEntreprise}")
     //public ResponseEntity<Entreprise> modifierEntreprise(@PathVariable Integer id, @RequestBody Entreprise entrepriseDetails) {
      //   Entreprise entrepriseModifiee = entrepriseService.modifierEntreprise(id, entrepriseDetails);
        // return ResponseEntity.ok(entrepriseModifiee);
@@ -48,7 +48,7 @@ public class EntrepriseController {
 	}
 
     // Supprimer une entreprise par ID
-    @DeleteMapping("/supprimer/{id}")
+    @DeleteMapping("/api/entreprises/{idEntreprise}")
    // public ResponseEntity<Void> supprimerEntreprise(@PathVariable Integer id) {
    //entrepriseService.supprimerEntreprise(id);
         //return ResponseEntity.noContent().build();
@@ -57,7 +57,7 @@ public class EntrepriseController {
     	entrepriseService.supprimerEntrepriseParId(id);
 	}
     
-    @GetMapping("/lister/{id}")
+    @GetMapping("api/entreprises/{idEntreprise}")
 	public ResponseEntity<EntrepriseDto> obtenirEntreprise(@PathVariable Integer id) {
 		return ResponseEntity.ok(entrepriseService.obtenirEntrepriseParId(id));
 	}

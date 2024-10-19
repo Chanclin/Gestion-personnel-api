@@ -10,8 +10,9 @@ import com.gestion.personnel.models.Direction;
 
 @Mapper(componentModel = "spring")
 public interface DirectionMapper {
-	@Mapping(source = "entreprise.idEntreprise", target = "entrepriseId")
+	@Mapping(source= "entreprise.idEntreprise", target = "entrepriseId")
 	DirectionDto ToDirectionDto(Direction direction);
+
 	@Mapping(source = "entrepriseId", target = "entreprise.idEntreprise")
 	Direction ToDirection(DirectionDto directionDto);
 

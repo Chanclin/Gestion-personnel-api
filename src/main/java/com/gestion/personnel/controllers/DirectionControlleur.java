@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion.personnel.dto.DirectionDto;
 import com.gestion.personnel.models.Direction;
-import com.gestion.personnel.services.DirectionService;
+import com.gestion.personnel.services.DirectionServiceImpl;
 
 @RestController
 @RequestMapping("/api/directions")
 public class DirectionControlleur {
 	@Autowired
-	private DirectionService directionService;
+	private DirectionServiceImpl directionService;
 
 	// Lister toutes les directions
 	@GetMapping("/lister")

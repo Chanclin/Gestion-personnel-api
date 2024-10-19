@@ -24,10 +24,12 @@ public class Entreprise {
 	//@Column(name = "id_entreprise")
 	private Integer idEntreprise;
 
+	@Column(nullable = false)
 	private String nomEntreprise;
 
 	private String adresseEntreprise;
 
+	@Column(unique = true)
 	private String emailEntreprise;
 
 	@OneToMany(mappedBy = "entreprise", cascade = CascadeType.ALL) // une enterprise peut avoir plusieurs directions

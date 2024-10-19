@@ -17,5 +17,6 @@ public class DirectionDto {
 	private String nomDirection;
 
 	private String description;
+	
 	private Integer entrepriseId;
 }

@@ -4,6 +4,7 @@ import com.gestion.personnel.dto.DirectionDto;
 import com.gestion.personnel.dto.EntrepriseDto;
 import com.gestion.personnel.models.Direction;
 import com.gestion.personnel.models.Entreprise;
+import com.gestion.personnel.services.EntrepriseService;
 import com.gestion.personnel.services.EntrepriseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ import java.util.List;
 public class EntrepriseController {
 
     @Autowired
-    private EntrepriseServiceImpl entrepriseService;
+    private EntrepriseService entrepriseService;
 
     // Lister toutes les entreprises
     @GetMapping("/lister")

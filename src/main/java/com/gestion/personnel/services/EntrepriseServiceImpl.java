@@ -12,6 +12,7 @@ import com.gestion.personnel.repositories.EntrepriseRepository;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 @RequiredArgsConstructor
@@ -29,10 +30,10 @@ public class EntrepriseServiceImpl implements EntrepriseService {
 		Entreprise entreprise = entrepriseMapper.ToEntreprise(entrepriseDto);
 
 		// Pour chaque direction, associer l'entreprise correspondante
-		if (entreprise.getDirections() != null) {
-			for (Direction direction : entreprise.getDirections()) {
-				direction.setEntreprise(entreprise); // Associer l'entreprise à la direction
-			}
+		if (!CollectionUtils.isEmpty(entreprise.getDirections())) {
+			entreprise.getDirections().forEach(direction -> {
+				direction.setEntreprise(entreprise);// Associer l'entreprise à la direction
+			});
 		}
 
 		// Sauvegarder l'entreprise avec ses directions associées

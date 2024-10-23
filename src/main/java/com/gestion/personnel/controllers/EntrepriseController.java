@@ -1,11 +1,8 @@
 package com.gestion.personnel.controllers;
 
-import com.gestion.personnel.dto.DirectionDto;
 import com.gestion.personnel.dto.EntrepriseDto;
-import com.gestion.personnel.models.Direction;
 import com.gestion.personnel.models.Entreprise;
 import com.gestion.personnel.services.EntrepriseService;
-import com.gestion.personnel.services.EntrepriseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +17,7 @@ public class EntrepriseController {
     private EntrepriseService entrepriseService;
 
     // Lister toutes les entreprises
-    @GetMapping("/lister")
+    @GetMapping("/lister") 
     public ResponseEntity<List<EntrepriseDto>> listerEntreprises() {
     	//List<Entreprise> entreprises = entrepriseService.listerEntreprises();
     	//return ResponseEntity.ok(entreprises);

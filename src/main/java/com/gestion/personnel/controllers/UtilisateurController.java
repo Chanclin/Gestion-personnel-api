@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gestion.personnel.dto.AuthentificationDTO;
 import com.gestion.personnel.dto.UtilisateurDto;
+import com.gestion.personnel.security.JwtService;
 import com.gestion.personnel.services.UtilisateurService;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class UtilisateurController {
 	
 	private AuthenticationManager authenticationManager;
 	private UtilisateurService utilisateurService;
+	private JwtService jwtService;
 
     @PostMapping(path = "inscription")
     public void inscription(@RequestBody UtilisateurDto utilisateurDto) {
@@ -37,7 +39,12 @@ public class UtilisateurController {
     	final Authentication authentication = authenticationManager.authenticate(
     			new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
     			);
+    	if (authentication.isAuthenticated()) {
+    		return this.jwtService.generate(authentificationDTO.username());
+    	}
     	log.info("resultat", authentication.isAuthenticated());
     	return null;
+    	
+    	
     }
 }

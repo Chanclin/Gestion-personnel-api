@@ -1,6 +1,5 @@
 package com.gestion.personnel.services;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Service;
 import com.gestion.personnel.dto.UtilisateurDto;
 import com.gestion.personnel.models.Utilisateur;
 import com.gestion.personnel.repositories.UtilisateurRepository;
-
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 

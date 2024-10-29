@@ -21,7 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/utilisateur/")
 public class UtilisateurController {
 	
 	private AuthenticationManager authenticationManager;

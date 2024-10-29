@@ -24,39 +24,25 @@ public class DirectionControlleur {
 	private DirectionServiceImpl directionService;
 
 	// Lister toutes les directions
-	@GetMapping("/lister")
+	@GetMapping
 	public ResponseEntity<List<DirectionDto>> listerDirections() {
-		// List<Direction> directions = directionService.listerDirections();
-		// return ResponseEntity.ok(directions);
 		return ResponseEntity.ok(directionService.listerDirections());
 	}
 
 	// Créer une nouvelle direction
-	@PostMapping("/creer")
-	// public ResponseEntity<Direction> creerDirection(@RequestBody Direction
-	// direction) {
-	// Direction nouvelleDirection = directionService.creerDirection(direction);
-	// return ResponseEntity.ok(nouvelleDirection);
+	@PostMapping
 	public ResponseEntity<Direction> creerDirection(@RequestBody DirectionDto directionDto) {
 		return ResponseEntity.ok(directionService.creerDirection(directionDto));
 	}
 
 	// Modifier une direction par ID
 	@PutMapping("/modifier/{id}")
-	// public ResponseEntity<Direction> modifierDirection(@PathVariable Integer id,
-	// @RequestBody Direction directionDetails) {
-	// Direction directionModifiee = directionService.modifierDirection(id,
-	// directionDetails);
-	// return ResponseEntity.ok(directionModifiee);
 	public DirectionDto modifierDirection(@PathVariable Integer id, @RequestBody DirectionDto directionDto) {
 		return directionService.modifierDirection(id, directionDto);
 	}
 
 	// Supprimer une entreprise par ID
 	@DeleteMapping("/supprimer/{id}")
-	// public ResponseEntity<Void> supprimerDirection(@PathVariable Integer id) {
-	// directionService.supprimerDirection(id);
-	// return ResponseEntity.noContent().build();
 	public void supprimerDirection(@PathVariable Integer id) {
 		directionService.supprimerDirectionParId(id);
 	}

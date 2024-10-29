@@ -16,10 +16,11 @@ import lombok.Setter;
 public class EntrepriseDto {
 	private Integer idEntreprise;
 
- 	private String nomEntreprise;
+	private String nomEntreprise;
 
 	private String adresseEntreprise;
 
 	private String emailEntreprise;
+	
 	private List<DirectionDto> directions;
 }

@@ -12,7 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**") // Remplacez par le chemin de votre API
                 .allowedOrigins("http://localhost:4200") // L'origine de votre application Angular
                 .allowedMethods("GET", "POST", "PUT", "DELETE") // Méthodes autorisées
-                .allowedHeaders("*")
+                .allowedHeaders("Authorization", "Content-Type", "X-Requested-With")
                 .allowCredentials(true); // Si vous utilisez des cookies ou des sessions
     }
 }

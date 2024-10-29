@@ -1,5 +1,7 @@
 package com.gestion.personnel.security;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,52 +17,59 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
-public class ConfigurationSecurityApplication{
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
-    public ConfigurationSecurityApplication(final BCryptPasswordEncoder bCryptPasswordEncoder, final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jwtFilter = jwtFilter;
-        this.userDetailsService = userDetailsService;
-    }
+public class ConfigurationSecurityApplication {
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final JwtFilter jwtFilter;
+	private final UserDetailsService userDetailsService;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
-        return
-                httpSecurity
-                        .csrf(AbstractHttpConfigurer::disable)
-                        .authorizeHttpRequests(
-                                authorize ->
-                                        authorize
-		                                        .requestMatchers("/api/inscription").permitAll()
-		                                    	.requestMatchers("/api/connexion").permitAll()
-                                                .anyRequest().authenticated()
-                        )
-                        .sessionManagement(httpSecuritySessionManagementConfigurer ->
-                                httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+	public ConfigurationSecurityApplication(final BCryptPasswordEncoder bCryptPasswordEncoder,
+			final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.jwtFilter = jwtFilter;
+		this.userDetailsService = userDetailsService;
+	}
 
-                                )
-                        .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                        .build();
-    }
+	@Bean
+	public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity
+				.cors(cors -> cors.configurationSource(request -> {
+	                CorsConfiguration config = new CorsConfiguration();
+	                config.setAllowedOrigins(List.of("http://localhost:4200"));
+	                config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	                config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+	                config.setAllowCredentials(true);
+	                return config;
+	            }))
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/utilisateur/inscription").permitAll()
+						.requestMatchers("/api/utilisateur/connexion").permitAll()
+						.requestMatchers("/api/directions/**").authenticated()
+						.requestMatchers("/api/entreprises/**").authenticated().anyRequest().authenticated())
+				.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-    @Bean
-    public AuthenticationManager authenticationManager (final AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+				).addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
+	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider () {
-        final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(this.bCryptPasswordEncoder);
-        return daoAuthenticationProvider;
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
+
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
+		daoAuthenticationProvider.setPasswordEncoder(this.bCryptPasswordEncoder);
+		return daoAuthenticationProvider;
+	}
+	
+	
 
 }

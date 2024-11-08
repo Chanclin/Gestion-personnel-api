@@ -1,7 +1,5 @@
 package com.gestion.personnel.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,14 +11,15 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EntrepriseDto {
-	private Integer idEntreprise;
-
-	private String nomEntreprise;
-
-	private String adresseEntreprise;
-
-	private String emailEntreprise;
+public class UtilisateurDto {
+private Integer idUtlisateur;
 	
-	private List<DirectionDto> directions;
+	private String password;
+	
+	private String nom;
+	
+	private String email;
+	
+	private boolean actif = false;
+
 }

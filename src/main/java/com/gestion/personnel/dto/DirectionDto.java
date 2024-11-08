@@ -1,10 +1,12 @@
 package com.gestion.personnel.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Builder
 @Getter
 @Setter
 @AllArgsConstructor
@@ -15,5 +17,6 @@ public class DirectionDto {
 	private String nomDirection;
 
 	private String description;
+	
 	private Integer entrepriseId;
 }

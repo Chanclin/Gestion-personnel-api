@@ -1,7 +1,8 @@
 {
 	"info": {
-		"_postman_id": "6efd8722-06db-4275-82d8-41eb59d0572b",
+		"_postman_id": "9adcc22e-bee3-46a5-9662-dc24951ea7d8",
 		"name": "Getsion-Personnel",
+		"description": "### 1\\. **Nom de la Collection :** Gestion-Personnel\n\nLa collection \"Gestion_Entreprise_API\" contient tous les endpoints nécessaires pour gérer les entités `Direction`, `Entreprise`, et les fonctionnalités de sécurité de l'API. Chaque entité aura ses propres sous-dossiers pour organiser les différents appels d'API et rendre les tests plus clairs.\n\n---\n\n### 2\\. **Structure de la Collection :**\n\n#### **1\\. Entreprise**\n\n- **Créer une entreprise** :\n    \n    - **Méthode :** `POST`\n        \n    - **URL :** `/entreprises/creer`\n        \n    - { \"nomEntreprise\": \"Nom de l'entreprise\", \"adresseEntreprise\": \"Adresse de l'entreprise\", \"emailEntreprise\": \"[email@entreprise.com](https://mailto:email@entreprise.com)\"}\n        \n    - **Description** : Crée une nouvelle entreprise dans la base de données.\n        \n- **Lister toutes les entreprises** :\n    \n    - **Méthode :** `GET`\n        \n    - **URL :** `/entreprises`\n        \n    - **Description** : Récupère la liste de toutes les entreprises.\n        \n- **Modifier une entreprise** :\n    \n    - **Méthode :** `PUT`\n        \n    - **URL :** `/entreprises/{id}`\n        \n    - { \"nomEntreprise\": \"Nouveau nom\", \"adresseEntreprise\": \"Nouvelle adresse\", \"emailEntreprise\": \"[nouvel_email@entreprise.com](https://mailto:nouvel_email@entreprise.com)\"}\n        \n    - **Description** : Modifie les informations d'une entreprise existante.\n        \n- **Supprimer une entreprise** :\n    \n    - **Méthode :** `DELETE`\n        \n    - **URL :** `/entreprises/{id}`\n        \n    - **Description** : Supprime une entreprise en fonction de son identifiant.\n        \n\n#### **2\\. Direction**\n\n- **Créer une direction** :\n    \n    - **Méthode :** `POST`\n        \n    - **URL :** `/directions/creer`\n        \n    - { \"nomDirection\": \"Nom de la direction\", \"entrepriseId\": 1}\n        \n    - **Description** : Ajoute une nouvelle direction associée à une entreprise spécifique.\n        \n- **Lister toutes les directions** :\n    \n    - **Méthode :** `GET`\n        \n    - **URL :** `/directions`\n        \n    - **Description** : Récupère la liste de toutes les directions.\n        \n- **Modifier une direction** :\n    \n    - **Méthode :** `PUT`\n        \n    - **URL :** `/directions/{id}`\n        \n    - { \"nomDirection\": \"Nouveau nom de la direction\", \"entrepriseId\": 1}\n        \n    - **Description** : Modifie les informations d'une direction existante.\n        \n- **Supprimer une direction** :\n    \n    - **Méthode :** `DELETE`\n        \n    - **URL :** `/directions/{id}`\n        \n    - **Description** : Supprime une direction en fonction de son identifiant.\n        \n\n#### **3\\. Sécurité**\n\n- **Enregistrement utilisateur** :\n    \n    - **Méthode :** `POST`\n        \n    - **URL :** `/auth/register`\n        \n    - { \"username\": \"nom_utilisateur\", \"email\": \"[email@exemple.com](https://mailto:email@exemple.com)\", \"password\": \"mot_de_passe\"}\n        \n    - **Description** : Permet à un utilisateur de créer un compte.\n        \n- **Connexion utilisateur** :\n    \n    - **Méthode :** `POST`\n        \n    - **URL :** `/auth/login`\n        \n    - { \"username\": \"nom_utilisateur\", \"password\": \"mot_de_passe\"}\n        \n    - **Description** : Authentifie l'utilisateur et retourne un token JWT pour l'accès sécurisé aux autres endpoints.\n        \n- **Accès sécurisé** :\n    \n    - **Exemple de requête sécurisée** (utilisant le token JWT) :\n        \n        - **Méthode :** `GET`\n            \n        - **URL :** `/entreprises`\n            \n        - **Headers** :\n            \n            - **Authorization** : `Bearer`\n                \n        - **Description** : Accède à des routes sécurisées en ajoutant le token dans l'en-tête Authorization.\n            \n\n---\n\n### 3\\. **Conseils pour utiliser la collection**\n\n- **Variables d'environnement** : Configurez des variables pour stocker l'`id` de l'entreprise ou de la direction après les créations, ainsi que pour le `token` JWT.\n    \n- **Tests automatiques** : Ajoutez des tests Postman dans chaque requête pour vérifier les réponses (statut HTTP, structure JSON, etc.).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "33731094"
 	},
@@ -10,24 +11,13 @@
 			"name": "Sécurité",
 			"item": [
 				{
-					"name": "Login",
+					"name": "Inscription",
 					"request": {
 						"method": "POST",
-						"header": [
-							{
-								"key": "Login",
-								"value": "",
-								"type": "text"
-							},
-							{
-								"key": "Password",
-								"value": "",
-								"type": "text"
-							}
-						],
+						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"login\" : \"TESST\",\r\n    \"password\": \"Pass\"\r\n}",
+							"raw": "{\r\n    \"password\": \"here\",\r\n    \"email\": \"Gomme@gmail.com\",\r\n    \"nom\": \"zarbon\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -35,27 +25,46 @@
 							}
 						},
 						"url": {
-							"raw": "{{URL}}/api/login?nom=MAKOSSO&prenom=Chancelin&Adresse=Liberté6",
+							"raw": "http://localhost:8080/api/utilisateur/inscription",
+							"protocol": "http",
 							"host": [
-								"{{URL}}"
+								"localhost"
 							],
+							"port": "8080",
 							"path": [
 								"api",
-								"login"
-							],
-							"query": [
-								{
-									"key": "nom",
-									"value": "MAKOSSO"
-								},
-								{
-									"key": "prenom",
-									"value": "Chancelin"
-								},
-								{
-									"key": "Adresse",
-									"value": "Liberté6"
+								"utilisateur",
+								"inscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Connexion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Jacque@gmail.com\",\r\n    \"password\": \"jeen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
 								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/utilisateur/connexion",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"utilisateur",
+								"connexion"
 							]
 						}
 					},
@@ -69,16 +78,70 @@
 				{
 					"name": "Afficher les directions",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk5MDE2MTcsInN1YiI6IkphY3F1ZUBnbWFpbC5jb20iLCJub20iOiJFbWEifQ.ql-Ac7C3r7QfpvJJst20kary1czZ_FE_2drR1WPPKnE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/directions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"directions"
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Créer une Direction",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJub20iOiJFbWEiLCJzdWIiOiJKYWNxdWVAZ21haWwuY29tIiwiZXhwIjoxNzI5ODU2NjA4fQ.3ddPD22-Mgg_JAXb1fPFlCpgoh01akzTYVvJKwDdmM8",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomDirection\": \"Direction Exemple\",\r\n    \"descriptionDirection\": \"Description de la direction exemple\",\r\n    \"entrepriseId\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/directions/creer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"directions",
+								"creer"
+							]
+						}
 					},
 					"response": []
 				},
@@ -86,7 +149,30 @@
 					"name": "Modifier une Direction",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nomDirection\": \"DSII\",\r\n    \"descriptionDirection\": \"Supervise les projets Informatique.\",\r\n    \"idEntreprise\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/directions/modifier/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"directions",
+								"modifier",
+								"3"
+							]
+						}
 					},
 					"response": []
 				},
@@ -94,7 +180,19 @@
 					"name": "Supprimer une direction",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -106,10 +204,20 @@
 				{
 					"name": "Lister les Entreprises",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk5MDEyNTUsInN1YiI6IkphY3F1ZUBnbWFpbC5jb20iLCJub20iOiJFbWEifQ.VZEjpiWam2w3ZTRN7j-0-sgQ4DtkDljuA16fQJWuhwY",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/entreprises/lister",
+							"raw": "http://localhost:8080/api/entreprises",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -117,8 +225,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"entreprises",
-								"lister"
+								"entreprises"
 							]
 						}
 					},
@@ -127,11 +234,21 @@
 				{
 					"name": "Creer une Entreprise",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk5MDE2MTcsInN1YiI6IkphY3F1ZUBnbWFpbC5jb20iLCJub20iOiJFbWEifQ.ql-Ac7C3r7QfpvJJst20kary1czZ_FE_2drR1WPPKnE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nomEntreprise\": \"STARTEIPG\",\r\n  \"adresseEntreprise\": \"IPG\",\r\n  \"emailEntreprise\": \"IPG.entreprise@gmail.com\"\r\n}",
+							"raw": "{\r\n    \"nomEntreprise\": \"Tech\",\r\n    \"adresseEntreprise\": \"Libertéd\",\r\n    \"emailEntreprise\": \"bluetecfsdjfcfjsfp.com\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -139,7 +256,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/entreprises/creer",
+							"raw": "http://localhost:8080/api/entreprises",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -147,8 +264,7 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"entreprises",
-								"creer"
+								"entreprises"
 							]
 						}
 					},
@@ -157,6 +273,16 @@
 				{
 					"name": "Modifier une Entreprise",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk5MDE2MTcsInN1YiI6IkphY3F1ZUBnbWFpbC5jb20iLCJub20iOiJFbWEifQ.ql-Ac7C3r7QfpvJJst20kary1czZ_FE_2drR1WPPKnE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -169,7 +295,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/entreprises/modifier/6",
+							"raw": "http://localhost:8080/api/entreprises/modifier/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -179,7 +305,7 @@
 								"api",
 								"entreprises",
 								"modifier",
-								"6"
+								"1"
 							]
 						}
 					},
@@ -188,10 +314,20 @@
 				{
 					"name": "Supprimer une Entreprise",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3Mjk5MDE2MTcsInN1YiI6IkphY3F1ZUBnbWFpbC5jb20iLCJub20iOiJFbWEifQ.ql-Ac7C3r7QfpvJJst20kary1czZ_FE_2drR1WPPKnE",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/entreprises/supprimer/6\n\n",
+							"raw": "http://localhost:8080/api/entreprises/supprimer/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -201,7 +337,7 @@
 								"api",
 								"entreprises",
 								"supprimer",
-								"6\n\n"
+								"13"
 							]
 						}
 					},
@@ -216,7 +352,10 @@
 					"name": "Créer un utilisateur",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -224,7 +363,10 @@
 					"name": "créer un utilisateur",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -232,7 +374,10 @@
 					"name": "Modifier un utilisateur",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -240,7 +385,10 @@
 					"name": "Supprimer un utilisateur",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -253,7 +401,10 @@
 					"name": "Afficher les employés",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -261,7 +412,10 @@
 					"name": "Créer un Employé",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -269,7 +423,10 @@
 					"name": "Modifier un employé",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -277,7 +434,10 @@
 					"name": "Supprimer un Utilisateur",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}

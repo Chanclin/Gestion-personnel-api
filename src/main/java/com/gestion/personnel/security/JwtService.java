@@ -49,7 +49,7 @@ public class JwtService {
 
 		// Temps actuel et expiration dans 30 minutes
 		final long currentTime = System.currentTimeMillis();
-		final long expirationTime = currentTime + 30 * 60 * 1000;
+		final long expirationTime = currentTime + 60 * 60 * 1000;
 
 		// Définir les claims
 		final Map<String, Object> claims = Map.of("nom", utilisateur.getNom(), Claims.EXPIRATION,

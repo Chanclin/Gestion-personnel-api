@@ -32,3 +32,10 @@
 # Ignorer les fichiers de configuration spécifiques à l'OS
 Thumbs.db
 *.class
+.classpath
+.factorypath
+.settings/org.eclipse.jdt.core.prefs
+target/classes/com/gestion/personnel/GestionPersonnelApiApplication.class
+target/classes/META-INF/maven/com.gestion.personnel/gestion-personnel-api/pom.properties
+target/classes/META-INF/maven/com.gestion.personnel/gestion-personnel-api/pom.xml
+target/test-classes/com/gestion/personnel/GestionPersonnelApiApplicationTests.class

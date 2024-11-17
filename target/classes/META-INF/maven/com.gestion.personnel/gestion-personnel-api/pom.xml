@@ -124,5 +124,13 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+    <profile>
+        <id>no-tests</id>
+        <properties>
+            <skipTests>true</skipTests>
+        </properties>
+    </profile>
+</profiles>
 
 </project>

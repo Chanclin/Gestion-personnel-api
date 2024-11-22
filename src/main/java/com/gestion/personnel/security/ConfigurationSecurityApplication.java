@@ -20,24 +20,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
+@EnableMethodSecurity
 @EnableWebSecurity
 public class ConfigurationSecurityApplication {
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final JwtFilter jwtFilter;
+	private final UserDetailsService userDetailsService;
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JwtFilter jwtFilter;
-    private final UserDetailsService userDetailsService;
+	public ConfigurationSecurityApplication(final BCryptPasswordEncoder bCryptPasswordEncoder,
+			final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.jwtFilter = jwtFilter;
+		this.userDetailsService = userDetailsService;
+	}
 
-    public ConfigurationSecurityApplication(final BCryptPasswordEncoder bCryptPasswordEncoder,
-                                            final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jwtFilter = jwtFilter;
-        this.userDetailsService = userDetailsService;
-    }
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .cors(cors -> cors.configurationSource(request -> {
+	@Bean
+	public SecurityFilterChain securityFilterChain(final HttpSecurity httpSecurity) throws Exception {
+		return httpSecurity
+				.cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
                     config.setAllowedOrigins(List.of("http://localhost:8080", "https://gestion-personnel-464dbbb30049.herokuapp.com")); // Ajoutez l'URL de votre app Heroku
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
@@ -45,31 +45,31 @@ public class ConfigurationSecurityApplication {
                     config.setAllowCredentials(true);
                     return config;
                 }))
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/utilisateur/inscription").permitAll()
-                        .requestMatchers("/api/utilisateur/connexion").permitAll()
-                        .requestMatchers("/api/directions/**").permitAll()
-                        .requestMatchers("/api/entreprises/**").permitAll()
-                        .requestMatchers("/").permitAll()  // Permet l'accès à la route d'accueil (/) si nécessaire
-                        .anyRequest().authenticated())
-                .sessionManagement(httpSecuritySessionManagementConfigurer -> 
-                        httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+				.csrf(AbstractHttpConfigurer::disable)
+				.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/utilisateur/inscription").permitAll()
+						.requestMatchers("/api/utilisateur/connexion").permitAll()
+						.requestMatchers("/api/directions/**").authenticated()
+						.requestMatchers("/api/entreprises/**").authenticated().anyRequest().authenticated())
+				.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer
+						.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-    @Bean
-    public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
-            throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+				).addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class).build();
+	}
 
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(this.bCryptPasswordEncoder);
-        return daoAuthenticationProvider;
-    }
+	@Bean
+	public AuthenticationManager authenticationManager(final AuthenticationConfiguration authenticationConfiguration)
+			throws Exception {
+		return authenticationConfiguration.getAuthenticationManager();
+	}
+
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		final DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+		daoAuthenticationProvider.setUserDetailsService(this.userDetailsService);
+		daoAuthenticationProvider.setPasswordEncoder(this.bCryptPasswordEncoder);
+		return daoAuthenticationProvider;
+	}
+	
+	
+
 }

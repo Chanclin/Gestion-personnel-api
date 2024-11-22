@@ -20,7 +20,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
-@EnableMethodSecurity
 @EnableWebSecurity
 public class ConfigurationSecurityApplication {
 
@@ -29,7 +28,7 @@ public class ConfigurationSecurityApplication {
     private final UserDetailsService userDetailsService;
 
     public ConfigurationSecurityApplication(final BCryptPasswordEncoder bCryptPasswordEncoder,
-            final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
+                                            final JwtFilter jwtFilter, final UserDetailsService userDetailsService) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtFilter = jwtFilter;
         this.userDetailsService = userDetailsService;
@@ -54,7 +53,7 @@ public class ConfigurationSecurityApplication {
                         .requestMatchers("/api/entreprises/**").permitAll()
                         .requestMatchers("/").permitAll()  // Permet l'accès à la route d'accueil (/) si nécessaire
                         .anyRequest().authenticated())
-                .sessionManagement(httpSecuritySessionManagementConfigurer ->
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> 
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(this.jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

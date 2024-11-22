@@ -10,8 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // Remplacez par le chemin de votre API
-                .allowedOrigins("http://localhost:4200") // L'origine de votre application Angular
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // Méthodes autorisées
+                .allowedOrigins("http://localhost:8080", "https://gestion-personnel-464dbbb30049.herokuapp.com") // Ajoutez l'URL du frontend Heroku
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Méthodes autorisées
                 .allowedHeaders("Authorization", "Content-Type", "X-Requested-With")
                 .allowCredentials(true); // Si vous utilisez des cookies ou des sessions
     }

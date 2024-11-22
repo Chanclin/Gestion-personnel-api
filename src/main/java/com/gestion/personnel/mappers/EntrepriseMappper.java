@@ -2,7 +2,6 @@ package com.gestion.personnel.mappers;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
 
 import com.gestion.personnel.dto.EntrepriseDto;
 import com.gestion.personnel.models.Entreprise;

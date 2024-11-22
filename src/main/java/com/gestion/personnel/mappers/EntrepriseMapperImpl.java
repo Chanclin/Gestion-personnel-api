@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import com.gestion.personnel.dto.DirectionDto;
 import com.gestion.personnel.dto.EntrepriseDto;
 import com.gestion.personnel.models.Direction;
 import com.gestion.personnel.models.Entreprise;
 
+@Component
 public class EntrepriseMapperImpl implements EntrepriseMappper{
 
     @Autowired

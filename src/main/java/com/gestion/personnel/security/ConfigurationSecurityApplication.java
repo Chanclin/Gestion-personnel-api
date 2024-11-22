@@ -40,7 +40,7 @@ public class ConfigurationSecurityApplication {
         return httpSecurity
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:4200", "https://your-heroku-app.herokuapp.com")); // Ajoutez l'URL de votre app Heroku
+                    config.setAllowedOrigins(List.of("http://localhost:8080", "https://gestion-personnel-464dbbb30049.herokuapp.com")); // Ajoutez l'URL de votre app Heroku
                     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
                     config.setAllowCredentials(true);

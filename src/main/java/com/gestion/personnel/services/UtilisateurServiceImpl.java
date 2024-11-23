@@ -1,6 +1,5 @@
 package com.gestion.personnel.services;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -13,15 +12,14 @@ import com.gestion.personnel.models.Utilisateur;
 import com.gestion.personnel.repositories.UtilisateurRepository;
 import lombok.NoArgsConstructor;
 
-
 @NoArgsConstructor
 @Service
 public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsService {
 
-	@Autowired
+    @Autowired
     private UtilisateurRepository utilisateurRepository;
-	
-	@Autowired
+    
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Override
@@ -51,6 +49,11 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         return utilisateurRepository.save(utilisateur); // Retourner l'utilisateur enregistré
     }
 
+    // Méthode pour obtenir un utilisateur par son nom d'utilisateur (en fait l'email ici)
+    public Utilisateur getByUsername(String nom) {
+        return utilisateurRepository.findByNom(nom);
+    }
+
     private boolean isValidEmail(String email) {
         return email != null && email.contains("@");
     }
@@ -59,10 +62,15 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         return utilisateurRepository.findByEmail(email).isPresent();
     }
 
+    // Implémentation de loadUserByUsername pour l'authentification avec l'email
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return utilisateurRepository
+        // Utilisation de l'email pour récupérer un utilisateur
+        Utilisateur utilisateur = utilisateurRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Aucun utilisateur ne correspond à cet identifiant"));
+
+        // Retourner l'utilisateur pour l'authentification
+        return utilisateur;
     }
 }

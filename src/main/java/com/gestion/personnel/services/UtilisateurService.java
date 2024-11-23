@@ -10,4 +10,6 @@ public interface UtilisateurService{
 
 	UserDetails loadUserByUsername(String email);
 
+	Utilisateur getByUsername(String username);
+
 }

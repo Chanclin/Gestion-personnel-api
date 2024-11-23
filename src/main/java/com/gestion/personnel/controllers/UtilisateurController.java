@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,27 +35,6 @@ public class UtilisateurController {
 	private UtilisateurService utilisateurService;
 	private JwtService jwtService;
 
-    /*@PostMapping(path = "inscription")
-    public void inscription(@RequestBody UtilisateurDto utilisateurDto) {
-        log.info("Inscription");
-        this.utilisateurService.inscription(utilisateurDto);
-    }*/
-	/*@PostMapping(path = "inscription")
-	public Map<String, Object> inscription(@RequestBody UtilisateurDto utilisateurDto) {
-	    log.info("Inscription");
-	    
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	        this.utilisateurService.inscription(utilisateurDto);
-	        response.put("success", true);
-	        response.put("message", "Inscription réussie");
-	    } catch (Exception e) {
-	        log.error("Erreur lors de l'inscription", e);
-	        response.put("success", false);
-	        response.put("message", "Échec de l'inscription");
-	    }
-	    return response;
-	}*/
 	@PostMapping(path = "inscription")
 	public ResponseEntity<Map<String, Object>> inscription(@RequestBody UtilisateurDto utilisateurDto) {
 	    log.info("Inscription");
@@ -72,37 +53,48 @@ public class UtilisateurController {
 	    }
 	}
     
-    @PostMapping(path= "connexion")
-    public Map<String, String> connexion(@RequestBody AuthentificationDTO authentificationDTO){
-    	final Authentication authentication = authenticationManager.authenticate(
-    			new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
-    			);
-    	if (authentication.isAuthenticated()) {
-    		return this.jwtService.generate(authentificationDTO.username());
-    		
-    	}
-    	
-    	/*if (authentication.isAuthenticated()) {
-            // Générer le token JWT
-            String token = jwtService.generate(authentificationDTO.username()).get("token");
+	@PostMapping(path = "connexion")
+	public ResponseEntity<Map<String, Object>> connexion(@RequestBody AuthentificationDTO authentificationDTO) {
+	    Map<String, Object> response = new HashMap<>();
+	    log.info("Tentative de connexion pour l'utilisateur: {}", authentificationDTO.username());
 
-            // Récupérer l'utilisateur par email
-            Utilisateur utilisateur = utilisateurRepository.findByEmail(authentificationDTO.username())
-                    .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
+	    final Authentication authentication = authenticationManager.authenticate(
+	            new UsernamePasswordAuthenticationToken(authentificationDTO.username(), authentificationDTO.password())
+	    );
 
-            // Créer un DTO avec les informations de l'utilisateur
-            UtilisateurDto utilisateurDTO = new UtilisateurDto(utilisateur.getNom(), utilisateur.getEmail());
+	    if (authentication.isAuthenticated()) {
+	        log.info("Authentification réussie pour l'utilisateur: {}", authentificationDTO.username());
 
-            // Préparer la réponse avec le token et le DTO
-            Map<String, Object> response = new HashMap<>();
-            response.put("token", token);
-            response.put("utilisateur", utilisateurDTO); // Inclure le DTO avec les informations nécessaires
-            return response;
-        }*/
-       
-    	log.info("resultat", authentication.isAuthenticated());
-    	return null;
-    	
-    	
+	        // Générer le token
+	        Map<String, String> token = jwtService.generate(authentificationDTO.username());
+	        
+	        // Récupérer l'utilisateur
+	        Utilisateur utilisateur = utilisateurService.getByUsername(authentificationDTO.username());
+
+	        // Ajouter le token et les informations utilisateur à la réponse
+	        response.put("token", token.get("token"));
+	       response.put("user", authentificationDTO.username());
+
+	        return ResponseEntity.ok(response);
+	    }
+
+	    log.warn("Authentification échouée pour l'utilisateur: {}", authentificationDTO.username());
+	    response.put("message", "Authentification échouée");
+	    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+	}
+
+
+
+    
+    @GetMapping(path = "profile")
+    public UtilisateurDto getUtilisateurProfile() {
+        // Récupère le nom d'utilisateur du contexte de sécurité
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        // Récupère l'utilisateur par son nom d'utilisateur
+        Utilisateur utilisateur = utilisateurService.getByUsername(username);
+        // Retourne le DTO avec les informations utiles
+        return new UtilisateurDto(utilisateur.getNom(), utilisateur.getEmail()); // Utilise le constructeur adapté
     }
+
+
 }
